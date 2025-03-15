@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Novo Cliente</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <form action="/novo" method="POST">
+    <label for="nome">Nome:</label><br />
+    <input type="text" name="nome" id="nome" required /><br />
+
+    <label for="nascimento">Data de Nascimento:</label><br />
+    <input
+      type="date"
+      name="nascimento"
+      id="nascimento"
+      placeholder="Nascimento"
+    /><br />
+
+    <label for="cpf">CPF:</label><br />
+    <input type="text" name="cpf" id="cpf" required /><br />
+
+    <label for="endereco">Endereço:</label><br />
+    <input type="text" name="endereco" id="endereco" required /><br />
+
+    <label for="telefone">Telefone:</label><br />
+    <input type="text" name="telefone" id="telefone" required /><br />
+
+    <label for="email">Email:</label><br />
+    <input type="email" name="email" id="email" required /><br />
+
+    <button type="submit" class="cadastrar">Cadastrar</button>
+  </form>
+
+  <a href="/">
+    <button class="voltar">Voltar</button>
+  </a>
+</body>
+</html>
