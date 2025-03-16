@@ -78,7 +78,6 @@ function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
 	}
-	alert('Usuário ou senha incorretos!');
 	res.redirect('/login');
 }
 

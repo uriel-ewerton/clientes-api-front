@@ -14,67 +14,87 @@
             </a>
         </header>
 
-        <a href="/novo">
-            <button>Novo Cliente</button>
-        </a>
+        <main>
+            <div class="funcoesPrincipais">
+                <a href="/novo">
+                    <button>Novo Cliente</button>
+                </a>
 
-        <label for="pesquisa">Pesquisar cliente: </label>
-        <input class="pesquisa" type="text" placeholder="Pesquisar por nome" />
-        <button>Pesquisar</button>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Data/Nasc</th>
-                    <th>CPF</th>
-                    <th>Endereço</th>
-                    <th>Telefone</th>
-                    <th>Email</th>
-                    <th class="centralizado">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% clientes.forEach((cliente) => { %>
-                <tr>
-                    <td><%= cliente.id %></td>
-                    <td><%= cliente.nome %></td>
-                    <td><%= cliente.nascimento %></td>
-                    <td><%= cliente.cpf %></td>
-                    <td><%= cliente.endereco %></td>
-                    <td><%= cliente.telefone %></td>
-                    <td><%= cliente.email %></td>
-                    <td class="centralizado">
-                        <form
-                            action="/editar/<%= cliente.id %>"
-                            method="GET"
-                            style="display: inline"
-                        >
-                            <button type="submit" class="editar">Editar</button>
-                        </form>
-                        <button
-                            type="button"
-                            class="excluir"
-                            onclick="confirmarExclusao('<%= cliente.id %>')"
-                        >
-                            Excluir
-                        </button>
-                    </td>
-                </tr>
-                <% }) %>
-            </tbody>
-        </table>
-
-        <!-- Modal de Confirmação -->
-        <div id="modalConfirmacao" class="modal">
-            <div class="modal-content">
-                <p>Deseja excluir este cliente?</p>
-                <button id="confirmar" class="excluir">Sim</button>
-                <button id="cancelar">Não</button>
+                <div>
+                    <label for="pesquisa">Pesquisar cliente: </label>
+                    <input
+                        class="pesquisa"
+                        type="text"
+                        placeholder="Pesquisar por nome"
+                    />
+                    <button>Pesquisar</button>
+                </div>
             </div>
-        </div>
 
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Data/Nasc</th>
+                        <th>CPF</th>
+                        <th>Endereço</th>
+                        <th>Telefone</th>
+                        <th>Email</th>
+                        <th class="centralizado">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% clientes.forEach((cliente) => { %>
+                    <tr>
+                        <td><%= cliente.id %></td>
+                        <td><%= cliente.nome %></td>
+                        <td><%= cliente.nascimento %></td>
+                        <td><%= cliente.cpf %></td>
+                        <td><%= cliente.endereco %></td>
+                        <td><%= cliente.telefone %></td>
+                        <td><%= cliente.email %></td>
+                        <td class="centralizado">
+                            <form
+                                action="/editar/<%= cliente.id %>"
+                                method="GET"
+                                style="display: inline"
+                            >
+                                <button type="submit" class="editar">
+                                    Editar
+                                </button>
+                            </form>
+                            <button
+                                type="button"
+                                class="excluir"
+                                onclick="confirmarExclusao('<%= cliente.id %>')"
+                            >
+                                Excluir
+                            </button>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+            <!-- Modal de Confirmação -->
+            <div id="modalConfirmacao" class="modal">
+                <div class="modal-content">
+                    <p>Deseja excluir este cliente?</p>
+                    <button id="confirmar" class="excluir">Sim</button>
+                    <button id="cancelar">Não</button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Desenvolvido por:</p>
+            <div>
+                <a href="https://github.com/uriel-ewerton"> Uriel Ewerton </a>
+                <a href="https://github.com/marcuscgc-code">
+                    Marcus Cristian
+                </a>
+            </div>
+        </footer>
         <script>
             function confirmarExclusao(clienteId) {
                 const modal = document.getElementById("modalConfirmacao");
@@ -85,7 +105,7 @@
                 confirmar.onclick = function () {
                     const form = document.createElement("form");
                     form.method = "POST";
-                    form.action = `/excluir/${clienteId}`; 
+                    form.action = `/excluir/${clienteId}`;
                     document.body.appendChild(form);
                     form.submit();
                 };
@@ -105,7 +125,4 @@
             }
         </script>
     </body>
-    <footer>
-
-    </footer>
 </html>
