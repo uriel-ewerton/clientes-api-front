@@ -2,6 +2,10 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 
+app.set('view engine', 'ejs');
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
+
 // URL da sua API Spring Boot
 const apiUrl = 'http://localhost:8080/api/clientes';
 
