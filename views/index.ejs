@@ -1,128 +1,157 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Lista de Clientes</title>
-        <link rel="stylesheet" href="/css/style.css" />
-    </head>
-    <body>
-        <header>
-            <h1>Lista de Clientes</h1>
-            <a href="/logout">
-                <button>Sair</button>
-            </a>
-        </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Clientes</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Lista de Clientes</h1>
+      <a href="/logout">
+        <button>Sair</button>
+      </a>
+    </header>
 
-        <main>
-            <div class="funcoesPrincipais">
-                <a href="/novo">
-                    <button>Novo Cliente</button>
-                </a>
+    <main>
+      <div class="funcoes-principais">
+        <a href="/novo">
+          <button>Novo Cliente</button>
+        </a>
+        <div>
+          <label for="pesquisa">Pesquisar cliente:</label>
+          <input class="pesquisa" type="text" placeholder="Pesquisar por nome" />
+          <button>Pesquisar</button>
+        </div>
+      </div>
 
-                <div>
-                    <label for="pesquisa">Pesquisar cliente: </label>
-                    <input
-                        class="pesquisa"
-                        type="text"
-                        placeholder="Pesquisar por nome"
-                    />
-                    <button>Pesquisar</button>
-                </div>
-            </div>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Data/Nasc</th>
+            <th>CPF</th>
+            <th>Endereço</th>
+            <th>Telefone</th>
+            <th>Email</th>
+            <th class="centralizado">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% clientes.forEach((cliente) => { %>
+          <tr class="linha-tabela">
+            <td><%= cliente.id %></td>
+            <td><%= cliente.nome %></td>
+            <td><%= cliente.nascimento %></td>
+            <td><%= cliente.cpf %></td>
+            <td><%= cliente.endereco %></td>
+            <td><%= cliente.telefone %></td>
+            <td><%= cliente.email %></td>
+            <td class="centralizado">
+              <form action="/editar/<%= cliente.id %>" method="GET" style="display:inline">
+                <button type="submit" class="editar">Editar</button>
+              </form>
+              <button type="button" class="excluir" onclick="confirmarExclusao('<%= cliente.id %>')">
+                Excluir
+              </button>
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Data/Nasc</th>
-                        <th>CPF</th>
-                        <th>Endereço</th>
-                        <th>Telefone</th>
-                        <th>Email</th>
-                        <th class="centralizado">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% clientes.forEach((cliente) => { %>
-                    <tr>
-                        <td><%= cliente.id %></td>
-                        <td><%= cliente.nome %></td>
-                        <td><%= cliente.nascimento %></td>
-                        <td><%= cliente.cpf %></td>
-                        <td><%= cliente.endereco %></td>
-                        <td><%= cliente.telefone %></td>
-                        <td><%= cliente.email %></td>
-                        <td class="centralizado">
-                            <form
-                                action="/editar/<%= cliente.id %>"
-                                method="GET"
-                                style="display: inline"
-                            >
-                                <button type="submit" class="editar">
-                                    Editar
-                                </button>
-                            </form>
-                            <button
-                                type="button"
-                                class="excluir"
-                                onclick="confirmarExclusao('<%= cliente.id %>')"
-                            >
-                                Excluir
-                            </button>
-                        </td>
-                    </tr>
-                    <% }) %>
-                </tbody>
-            </table>
-            <!-- Modal de Confirmação -->
-            <div id="modalConfirmacao" class="modal">
-                <div class="modal-content">
-                    <p>Deseja excluir este cliente?</p>
-                    <button id="confirmar" class="excluir">Sim</button>
-                    <button id="cancelar">Não</button>
-                </div>
-            </div>
-        </main>
+      <!-- Container para paginação -->
+      <div class="paginacao" id="paginacao"></div>
 
-        <footer>
-            <p>Desenvolvido por:</p>
-            <div>
-                <a href="https://github.com/uriel-ewerton"> Uriel Ewerton </a>
-                <a href="https://github.com/marcuscgc-code">
-                    Marcus Cristian
-                </a>
-            </div>
-        </footer>
-        <script>
-            function confirmarExclusao(clienteId) {
-                const modal = document.getElementById("modalConfirmacao");
-                modal.style.display = "block";
+      <!-- Modal de Confirmação -->
+      <div id="modalConfirmacao" class="modal">
+        <div class="modal-conteudo">
+          <p>Deseja excluir este cliente?</p>
+          <button id="confirmar" class="excluir">Sim</button>
+          <button id="cancelar">Não</button>
+        </div>
+      </div>
+    </main>
 
-                // Configura ação de confirmação
-                const confirmar = document.getElementById("confirmar");
-                confirmar.onclick = function () {
-                    const form = document.createElement("form");
-                    form.method = "POST";
-                    form.action = `/excluir/${clienteId}`;
-                    document.body.appendChild(form);
-                    form.submit();
-                };
+    <footer>
+      <p>Desenvolvido por:</p>
+      <div>
+        <a href="https://github.com/uriel-ewerton">Uriel Ewerton</a>
+        <a href="https://github.com/marcuscgc-code">Marcus Cristian</a>
+      </div>
+    </footer>
 
-                // Configura ação de cancelamento
-                const cancelar = document.getElementById("cancelar");
-                cancelar.onclick = function () {
-                    modal.style.display = "none";
-                };
+    <script>
+      // Configura quantas linhas serão exibidas por página
+      const linhasPorPagina = 4;
+      const linhas = document.querySelectorAll(".linha-tabela");
+      const totalLinhas = linhas.length;
+      const totalPaginas = Math.ceil(totalLinhas / linhasPorPagina);
+      const containerPaginacao = document.getElementById("paginacao");
 
-                // Fecha modal ao clicar fora
-                window.onclick = function (event) {
-                    if (event.target === modal) {
-                        modal.style.display = "none";
-                    }
-                };
-            }
-        </script>
-    </body>
+      function exibirPagina(pagina) {
+        // Oculta todas as linhas
+        linhas.forEach(linha => linha.style.display = "none");
+
+        // Calcula os índices de início e fim para a página atual
+        const inicio = (pagina - 1) * linhasPorPagina;
+        const fim = inicio + linhasPorPagina;
+
+        // Exibe as linhas correspondentes à página
+        for (let i = inicio; i < fim && i < totalLinhas; i++) {
+          linhas[i].style.display = "";
+        }
+
+        // Atualiza os botões de paginação para refletir a página ativa
+        document.querySelectorAll(".numero-pagina").forEach((botao, indice) => {
+          if (indice + 1 === pagina) {
+            botao.classList.add("ativo");
+          } else {
+            botao.classList.remove("ativo");
+          }
+        });
+      }
+
+      function criarPaginacao() {
+        for (let i = 1; i <= totalPaginas; i++) {
+          const botao = document.createElement("div");
+          botao.className = "numero-pagina";
+          botao.textContent = i;
+          botao.addEventListener("click", () => exibirPagina(i));
+          containerPaginacao.appendChild(botao);
+        }
+      }
+
+      // Inicializa a paginação
+      criarPaginacao();
+      exibirPagina(1);
+
+      function confirmarExclusao(clienteId) {
+        const modal = document.getElementById("modalConfirmacao");
+        modal.style.display = "block";
+
+        const btnConfirmar = document.getElementById("confirmar");
+        btnConfirmar.onclick = function () {
+          const form = document.createElement("form");
+          form.method = "POST";
+          form.action = `/excluir/${clienteId}`;
+          document.body.appendChild(form);
+          form.submit();
+        };
+
+        const btnCancelar = document.getElementById("cancelar");
+        btnCancelar.onclick = function () {
+          modal.style.display = "none";
+        };
+
+        window.onclick = function (evento) {
+          if (evento.target === modal) {
+            modal.style.display = "none";
+          }
+        };
+      }
+    </script>
+  </body>
 </html>

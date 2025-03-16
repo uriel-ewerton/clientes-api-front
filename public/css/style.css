@@ -209,20 +209,55 @@ footer a:hover {
     background-color: #98a945;
 }
 
-header{
+header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
-header a{
+header a {
     margin: 20px;
 }
 
-.funcoesPrincipais{
+.funcoesPrincipais {
     display: flex;
     flex-direction: column;
 }
 
-.funcoesPrincipais a{
+.funcoesPrincipais a {
     width: 120px;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.paginacao {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.numero-pagina {
+    width: 40px;
+    height: 40px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.numero-pagina.ativo {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
 }
