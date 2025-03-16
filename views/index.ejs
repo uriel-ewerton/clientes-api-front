@@ -7,7 +7,12 @@
         <link rel="stylesheet" href="/css/style.css" />
     </head>
     <body>
-        <h1>Lista de Clientes</h1>
+        <header>
+            <h1>Lista de Clientes</h1>
+            <a href="/logout">
+                <button>Sair</button>
+            </a>
+        </header>
 
         <a href="/novo">
             <button>Novo Cliente</button>
@@ -80,7 +85,7 @@
                 confirmar.onclick = function () {
                     const form = document.createElement("form");
                     form.method = "POST";
-                    form.action = `/excluir/${clienteId}`; // Template string
+                    form.action = `/excluir/${clienteId}`; 
                     document.body.appendChild(form);
                     form.submit();
                 };

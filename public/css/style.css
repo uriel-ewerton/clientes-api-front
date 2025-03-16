@@ -109,7 +109,7 @@ form {
     display: inline;
 }
 
-input[type="text"], input[type="email"], input[type="date"] {
+input[type="text"], input[type="email"], input[type="date"],input[type="password"]  {
     width: 200px;
     padding: 5px;
     margin: 0px 0px 10px 0px;
@@ -167,4 +167,16 @@ input[type="text"], input[type="email"], input[type="date"] {
 
 #searchInput {
     width: 710px;
+}
+
+.login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.login div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

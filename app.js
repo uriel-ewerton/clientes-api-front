@@ -1,30 +1,98 @@
 const express = require('express');
+const session = require('express-session');
 const axios = require('axios');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const path = require('path');
+
 const app = express();
 
+// Configurar EJS como engine de views
 app.set('view engine', 'ejs');
-const path = require('path');
+app.set('views', path.join(__dirname, 'views'));
+
+// Servir arquivos estáticos (correção para o css)
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Exibir feedbacks
+const flash = require('connect-flash');
+app.use(flash());
+
+// Middleware para interpretar os dados do formulário
+app.use(express.urlencoded({ extended: true }));
+
+// Configuração do middleware de sessão
+app.use(session({
+	secret: 'lpweb',
+	resave: false,
+	saveUninitialized: false
+}));
+
+// Inicializar Passport e gerenciar sessão
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy((username, password, done) => {
+	// Exemplo simples: usuário e senha fixos
+	if (username === 'admin' && password === 'admin') {
+		return done(null, { id: 1, username: 'admin' });
+	} else {
+		return done(null, false, { message: 'Credenciais inválidas.' });
+	}
+}));
+
+passport.serializeUser((user, done) => {
+	done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+	done(null, { id: 1, username: 'admin' });
+});
 
 // URL da sua API Spring Boot
 const apiUrl = 'http://localhost:8080/api/clientes';
 
-// (Exemplo de rota simples)
-// app.get('/', (req, res) => {
-//   res.send('Criando minha primeira rota!');
-// });
+// Rota para exibir a tela de login
+app.get('/login', (req, res) => {
+	res.render('login', { message: req.flash('error') });
+});
 
-// Rota para listar os clientes
-app.get('/', async (req, res) => {
+// Rota para processar o login
+app.post('/login', passport.authenticate('local', {
+	successRedirect: '/',     // Redireciona para a rota protegida após login bem-sucedido
+	failureRedirect: '/login', // Em caso de falha, redireciona de volta para a tela de login
+	failureFlash: 'Usuário ou senha incorretos!' // Em caso de falha, exibe feedback
+}));
+
+// Rota para logout
+app.get('/logout', (req, res, next) => {
+	req.logout(function (err) {
+		if (err) { return next(err); }
+		res.redirect('/login');
+	});
+});
+
+
+// Middleware para proteger rotas
+function ensureAuthenticated(req, res, next) {
+	if (req.isAuthenticated()) {
+		return next();
+	}
+	alert('Usuário ou senha incorretos!');
+	res.redirect('/login');
+}
+
+app.get('/', ensureAuthenticated, async (req, res) => {
 	try {
 		const response = await axios.get(apiUrl);
 		const clientes = response.data;
-		res.render('index', { clientes });
+		res.render('index', { clientes, user: req.user });
 	} catch (error) {
 		console.error(error);
 		res.status(500).send('Erro ao buscar clientes');
 	}
 });
+
 
 // Rota para exibir o formulário de cadastro
 app.get('/novo', (req, res) => {
@@ -76,11 +144,11 @@ app.post('/editar/:id', async (req, res) => {
 app.post('/excluir/:id', async (req, res) => {
 	const { id } = req.params;
 	try {
-		await axios.delete(`${apiUrl}/${id}`); 
+		await axios.delete(`${apiUrl}/${id}`);
 		res.redirect('/');
 	} catch (error) {
 		console.error(error);
-		res.status(500).send('Erro ao excluir cliente'); 
+		res.status(500).send('Erro ao excluir cliente');
 	}
 });
 
