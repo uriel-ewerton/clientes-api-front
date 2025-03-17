@@ -33,7 +33,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new LocalStrategy((username, password, done) => {
-	// Exemplo simples: usuário e senha fixos
 	if (username === 'admin' && password === 'admin') {
 		return done(null, { id: 1, username: 'admin' });
 	} else {
@@ -49,7 +48,7 @@ passport.deserializeUser((id, done) => {
 	done(null, { id: 1, username: 'admin' });
 });
 
-// URL da sua API Spring Boot
+// URL da API Spring Boot
 const apiUrl = 'http://localhost:8080/api/clientes';
 
 // Rota para exibir a tela de login
@@ -111,8 +110,38 @@ app.post('/novo', async (req, res) => {
 	}
 });
 
+// Rota para pesquisar cliente por id
+app.get('/pesquisar/:id', ensureAuthenticated, async (req, res) => {
+	const { id } = req.params;
+	try {
+		const response = await axios.get(`${apiUrl}/${id}`);
+		const cliente = response.data;
+		res.render('index', { clientes: [cliente], user: req.user });
+	} catch (error) {
+		console.error(error);
+		res.redirect('/');
+		//res.status(500).send('Erro ao buscar cliente');
+	}
+});
+
+// Rota para pesquisar cliente por nome
+app.get('/pesquisar', ensureAuthenticated, async (req, res) => {
+	const { nome } = req.query;  
+	try {
+	  const response = await axios.get(`${apiUrl}/search`, {
+		params: { nome }
+	  });
+	  const clientes = response.data;
+	  res.render('index', { clientes, user: req.user });
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).send('Erro ao buscar cliente');
+	}
+  });
+  
+
 // Rota para exibir formulário de edição
-app.get('/editar/:id', async (req, res) => {
+app.get('/editar/:id', ensureAuthenticated, async (req, res) => {
 	const { id } = req.params;
 	try {
 		const response = await axios.get(`${apiUrl}/${id}`);
@@ -125,7 +154,7 @@ app.get('/editar/:id', async (req, res) => {
 });
 
 // Rota para atualizar um cliente
-app.post('/editar/:id', async (req, res) => {
+app.post('/editar/:id', ensureAuthenticated, async (req, res) => {
 	const { id } = req.params;
 	const { nome, nascimento, cpf, endereco, telefone, email } = req.body;
 	try {
@@ -140,7 +169,7 @@ app.post('/editar/:id', async (req, res) => {
 });
 
 // Rota para excluir um cliente
-app.post('/excluir/:id', async (req, res) => {
+app.post('/excluir/:id', ensureAuthenticated, async (req, res) => {
 	const { id } = req.params;
 	try {
 		await axios.delete(`${apiUrl}/${id}`);

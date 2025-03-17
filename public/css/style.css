@@ -137,12 +137,15 @@ input[type="password"] {
     background-color: rgba(0, 0, 0, 0.4); /* Preto com opacidade */
 }
 
-.modal-content {
+.modal-conteudo {
     background-color: #fefefe;
+    align-items: center;
+    justify-content: center;
     margin: 15% auto; /* 15% do topo e centralizado */
     padding: 20px;
     border: 1px solid #888;
     width: 300px; /* Largura do modal */
+    height: 160px;
     text-align: center;
     border-radius: 10px;
 }
