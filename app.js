@@ -93,12 +93,12 @@ app.get('/', ensureAuthenticated, async (req, res) => {
 
 
 // Rota para exibir o formulário de cadastro
-app.get('/novo', (req, res) => {
+app.get('/novo', ensureAuthenticated, (req, res) => {
 	res.render('cadastro');
 });
 
 // Rota para cadastrar um novo cliente
-app.post('/novo', async (req, res) => {
+app.post('/novo', ensureAuthenticated, async (req, res) => {
 	const { nome, nascimento, cpf, endereco, telefone, email } = req.body;
 	try {
 		await axios.post(apiUrl,
