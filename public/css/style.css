@@ -193,17 +193,27 @@ input[type="password"] {
 footer {
     display: flex;
     flex-direction: column;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color:  #bbb;
+    color: white;
+    text-align: center;
+    padding-bottom: 20px;
 }
 footer div {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     gap: 5px;
+
 }
 footer a {
     width: 140px;
     height: 30px;
     border-radius: 10px;
-    background-color: #c4c3c7;
+    background-color: #e2e1e5;
     text-decoration: none;
     text-align: center;
     align-content: center;
